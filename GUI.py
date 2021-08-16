@@ -20,19 +20,6 @@ import concurrent.futures
 # -------------------------------
 
 
-# What grid should look like:
-# 	col 0		col 1		col 2		col 3
-# -----------------------------------------------
-# |			|			|			|			|	row 0
-# |			|			|			|			|
-# -----------------------------------------------
-# |			|			|			|			|	row 1
-# |			|			|			|			|
-# -----------------------------------------------
-# |			|			|			|			|	row 2
-# |			|			|			|	     	|
-# -----------------------------------------------
-
 
 
 class GUI_Functions():
@@ -70,6 +57,7 @@ class GUI_Functions():
 
 	# displays the simulation 
 	def show_simulation(self):
+		# use start.py function here?? 
 		pass
 
 	# handles the event where the 'add objects' to simulation button is clicked

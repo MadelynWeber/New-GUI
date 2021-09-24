@@ -26,7 +26,7 @@ class GUI_Functions():
 
 	def __init__(self, root):
 
-		root.geometry("800x700")
+		root.geometry("1100x900")
 
 		# elements for the first section of the window grid
 		self.section_1 = Label(root, text="This is the first section of the window.\n [This is where the camera image will be loaded]", bg="MediumPurple1")
@@ -37,19 +37,23 @@ class GUI_Functions():
 		self.add_object_btn = Button(root, text="Add object", command=self.add_objects_clicked).grid(column=2, row=1, sticky=S, pady=15)
 
 		self.remove_obejct_btn = Button(root, text="Remove object", command=self.remove_objects_clicked).grid(column=3, row=1, sticky=S, pady=15)
-		self.holder = Label(root, text="This is a holder for where the simulation will be displayed.", bg="White", width=15, height=30).grid(column=2, row=0, columnspan=2, rowspan=1, sticky=N+E+S+W, padx=20, pady=20)
+		self.placeholder = Label(root, text="This is a placeholder for where the simulation will be displayed.", bg="White", width=15, height=30).grid(column=2, row=0, columnspan=2, rowspan=1, sticky=N+E+S+W, padx=20, pady=20)
+
+
+		# make self.placeholder here be the loaded simulatin.py file
+
 
 		# elements for the third section of the window grid
-		self.section_3 = Label(root, text="This is the third section of the window.\n [This will remain empty for now]", bg="Orchid2").grid(columnspan=4, row=2, sticky=N+E+S+W)
+		self.section_3 = Label(root, text="This is the third section of the window.\n ", bg="Orchid2").grid(columnspan=4, row=2, sticky=N+E+S+W)
 
 		# configuring columns and rows
 		Grid.columnconfigure(root, 0, weight=1)
 		Grid.columnconfigure(root, 1, weight=1)
 		Grid.columnconfigure(root, 2, weight=1)
 		Grid.columnconfigure(root, 3, weight=1)
-		Grid.rowconfigure(root, 0, weight=1)
-		Grid.rowconfigure(root, 1, weight=1)
-		Grid.rowconfigure(root, 2, weight=1)
+		Grid.rowconfigure(root, 0, weight=0)
+		Grid.rowconfigure(root, 1, weight=0)
+		Grid.rowconfigure(root, 2, weight=3)
 
 	# uses a thread to load camera image code separate from the GUI window
 	def load_camera_image(self):
@@ -57,7 +61,7 @@ class GUI_Functions():
 
 	# displays the simulation 
 	def show_simulation(self):
-		# use start.py function here?? 
+		# TODO: figure out how to embed the arcade window in this GUI window
 		pass
 
 	# handles the event where the 'add objects' to simulation button is clicked
@@ -65,7 +69,7 @@ class GUI_Functions():
 		self.add_window = Toplevel(root)
 		self.add_window.geometry("400x400")
 		self.add_window.title("Add Object")
-		lbl = Label(self.add_window, text="Enter the coordinates for an object to add.").pack()
+		lbl = Label(self.add_window, text="Enter the values for an object to add.").pack()
 		e = Entry(self.add_window, width=20).pack()
 		add_btn = Button(self.add_window, text="Add", command=self.add_btn_clicked).pack()
 		cancel_btn = Button(self.add_window, text="Cancel", command=lambda: self.cancel_btn_click(self.add_window)).pack()
@@ -75,7 +79,7 @@ class GUI_Functions():
 		self.remove_window = Toplevel(root)
 		self.remove_window.geometry("400x400")
 		self.remove_window.title("Remove Object")
-		lbl = Label(self.remove_window, text="Enter the coordinates for the object to remove.").pack()
+		lbl = Label(self.remove_window, text="Enter the name of the object to remove.").pack()
 		e = Entry(self.remove_window, width=20).pack()
 		remove_btn = Button(self.remove_window, text="Remove", command=self.remove_btn_clicked).pack()
 		cance_btn = Button(self.remove_window, text="Cancel", command=lambda: self.cancel_btn_click(self.remove_window)).pack()
@@ -99,7 +103,8 @@ class GUI_Functions():
 
 		print("---> Is in test_updates function")
 
-		self.section_1 = Label(root, text=value_of_update)
+		#self.section_1 = Label(root, text=value_of_update)
+		self.section_1.config(text=value_of_update)
 		self.section_1.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
 
 		self.section_1.update()
@@ -122,15 +127,22 @@ if __name__ == '__main__':
 	root = Tk()
 	root.title('Lab GUI Window')
 	gui_fun = GUI_Functions(root)
-	root.mainloop() 
+	# root.mainloop() 
 
-	print("starting second thread...")
+	# NOTE:
+	# if mainloop() is called first, then it runs the tkinter window and not the thread below
+	# if the thread below is called before mainloop(), then it runs the code in the thread first, then opens the tkinter window with the updates from the code second
+
+	# this works to run the other code and update the GUI window.. but doesn't run at the same time as the tkinter window - loads this first, then the window
+	print("starting  thread...")
 	test_thread = threading.Thread(target = test_thread())
 	test_thread.start()
 
-	print("before thread...")
-	GUI_Thread = threading.Thread(target = root.mainloop())
-	GUI_Thread.start()
+	root.mainloop()
+
+
+	# GUI_Thread = threading.Thread(target = root.mainloop())
+	# GUI_Thread.start()
 
 
 	GUI_Thread.join()

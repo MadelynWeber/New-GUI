@@ -97,7 +97,6 @@ class GUI_Functions():
 		print("** Remove button clicked **")
 
 
-
 	# function to test updates to GUI window
 	def test_updates(self, value_of_update):
 
@@ -120,7 +119,10 @@ def test_thread():
 	gui_fun.test_updates(return_value)
 	print("---> after test_updates...")
 
-
+def start_thread():
+	print("starting thread...")
+	test_thread = threading.Thread(target = test_thread())
+	test_thread.start()
 
 if __name__ == '__main__':
 	print("running... ")
@@ -134,18 +136,31 @@ if __name__ == '__main__':
 	# if the thread below is called before mainloop(), then it runs the code in the thread first, then opens the tkinter window with the updates from the code second
 
 	# this works to run the other code and update the GUI window.. but doesn't run at the same time as the tkinter window - loads this first, then the window
-	print("starting  thread...")
-	test_thread = threading.Thread(target = test_thread())
-	test_thread.start()
+	# print("starting  thread...")
+	# test_thread = threading.Thread(target = test_thread())
+	# test_thread.start() # --> dont do this here, do this thread inside of a callback function
 
-	root.mainloop()
+	# root.mainloop()
 
+	firstRun = True
+
+	while True:
+		root.update_idletasks()
+		root.update()
+
+		if firstRun:
+			print("is visible.")
+			print("starting  thread...")
+			test_thread = threading.Thread(target = test_thread())
+			test_thread.start() # --> dont do this here, do this thread inside of a callback function
+			# root.bind('<Map>', start_thread)
+			firstRun = False
 
 	# GUI_Thread = threading.Thread(target = root.mainloop())
 	# GUI_Thread.start()
 
 
-	GUI_Thread.join()
-	test_thread.join()
+	# GUI_Thread.join()
+	# test_thread.join()
 
 	

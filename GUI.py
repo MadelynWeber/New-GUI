@@ -5,6 +5,7 @@ import threading
 import time
 from Test_File import TestThread
 import concurrent.futures
+import sys # just added --> not tested yet (line 153)
 
 # Window should look like:
 #    column 0        column 1
@@ -18,8 +19,6 @@ import concurrent.futures
 # |       third section         |   row 1
 # |                             |
 # -------------------------------
-
-
 
 
 class GUI_Functions():
@@ -37,11 +36,9 @@ class GUI_Functions():
 		self.add_object_btn = Button(root, text="Add object", command=self.add_objects_clicked).grid(column=2, row=1, sticky=S, pady=15)
 
 		self.remove_obejct_btn = Button(root, text="Remove object", command=self.remove_objects_clicked).grid(column=3, row=1, sticky=S, pady=15)
-		self.placeholder = Label(root, text="This is a placeholder for where the simulation will be displayed.", bg="White", width=15, height=30).grid(column=2, row=0, columnspan=2, rowspan=1, sticky=N+E+S+W, padx=20, pady=20)
-
 
 		# make self.placeholder here be the loaded simulatin.py file
-
+		self.placeholder = Label(root, text="This is a placeholder for where the simulation will be displayed.", bg="White", width=15, height=30).grid(column=2, row=0, columnspan=2, rowspan=1, sticky=N+E+S+W, padx=20, pady=20)
 
 		# elements for the third section of the window grid
 		self.section_3 = Label(root, text="This is the third section of the window.\n ", bg="Orchid2").grid(columnspan=4, row=2, sticky=N+E+S+W)
@@ -97,6 +94,16 @@ class GUI_Functions():
 		print("** Remove button clicked **")
 
 
+	# function to test adding an image to the GUI window
+	def test_add_image(self):
+
+		self.image_1 = Image.open("./image_2.jpeg").resize((400, 200))
+		self.img_1 = ImageTk.PhotoImage(self.image_1)
+
+		self.section_1.config(image=self.img_1)
+		self.section_1.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
+		self.section_1.update()
+
 	# function to test updates to GUI window
 	def test_updates(self, value_of_update):
 
@@ -107,6 +114,15 @@ class GUI_Functions():
 		self.section_1.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
 
 		self.section_1.update()
+
+		self.test_add_image()
+
+
+	# function to update GUI window by displaying the 'frame' object found from (D:Workspace/pythonCamera/start.py)
+	def test_display_startPY(self):
+
+		pass
+
 
 def test_thread():
 	print("---> Before executor...")
@@ -130,6 +146,10 @@ if __name__ == '__main__':
 	root.title('Lab GUI Window')
 	gui_fun = GUI_Functions(root)
 	# root.mainloop() 
+
+	# added recently -- has not been tested yet!
+	sys.path.insert(0, 'D:Workspace/pythonCamera/start.py')
+
 
 	# NOTE:
 	# if mainloop() is called first, then it runs the tkinter window and not the thread below

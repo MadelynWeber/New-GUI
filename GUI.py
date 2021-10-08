@@ -5,7 +5,14 @@ import threading
 import time
 from Test_File import TestThread
 import concurrent.futures
-import sys # just added --> not tested yet (line 153)
+# TESTING:
+import sys
+# sys.path.append('./pythonCamera')
+sys.path.insert(1, '../pythonCamera')
+from start import test_function
+
+
+
 
 # Window should look like:
 #    column 0        column 1
@@ -120,8 +127,17 @@ class GUI_Functions():
 
 	# function to update GUI window by displaying the 'frame' object found from (D:Workspace/pythonCamera/start.py)
 	def test_display_startPY(self):
+		# ../pythonCamera/start.py
+		print("---> testing start.py")
+		returned_val = test_function()
 
-		pass
+		print("type of return value: ", type(returned_val))
+
+		# self.img_1 = ImageTk.PhotoImage(to_display)
+
+		# self.section_1.config(image=self.img_1)
+		# self.section_1.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
+		# self.section_1.update()
 
 
 def test_thread():
@@ -134,6 +150,9 @@ def test_thread():
 	# try to update the GUI window with new text value
 	gui_fun.test_updates(return_value)
 	print("---> after test_updates...")
+
+	print("------> testing start.py")
+	gui_fun.test_display_startPY()
 
 def start_thread():
 	print("starting thread...")
@@ -148,7 +167,7 @@ if __name__ == '__main__':
 	# root.mainloop() 
 
 	# added recently -- has not been tested yet!
-	sys.path.insert(0, 'D:Workspace/pythonCamera/start.py')
+	#sys.path.insert(0, 'D:Workspace/pythonCamera/start.py')
 
 
 	# NOTE:
@@ -182,5 +201,3 @@ if __name__ == '__main__':
 
 	# GUI_Thread.join()
 	# test_thread.join()
-
-	

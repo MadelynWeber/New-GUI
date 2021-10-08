@@ -131,7 +131,7 @@ class GUI_Functions():
 		print("---> testing start.py")
 		returned_val = test_function()
 
-		print("type of return value: ", type(returned_val))
+		print("type of return value: ", type(returned_val)) # --> type is: numpy.ndarray
 
 		# self.img_1 = ImageTk.PhotoImage(to_display)
 

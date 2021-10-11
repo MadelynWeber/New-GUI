@@ -10,6 +10,9 @@ import sys
 # sys.path.append('./pythonCamera')
 sys.path.insert(1, '../pythonCamera')
 from start import test_function
+#sys.path.insert(1, '../pythonSimulator')
+#from example import test_put_obstacle
+import numpy as np
 
 
 
@@ -75,6 +78,11 @@ class GUI_Functions():
 		self.add_window.title("Add Object")
 		lbl = Label(self.add_window, text="Enter the values for an object to add.").pack()
 		e = Entry(self.add_window, width=20).pack()
+		e2 = Entry(self.add_window, width=20).pack()
+		e3 = Entry(self.add_window, width=20).pack()
+		e4 = Entry(self.add_window, width=20).pack()
+		e5 = Entry(self.add_window, width=20).pack()
+		e6 = Entry(self.add_window, width=20).pack()
 		add_btn = Button(self.add_window, text="Add", command=self.add_btn_clicked).pack()
 		cancel_btn = Button(self.add_window, text="Cancel", command=lambda: self.cancel_btn_click(self.add_window)).pack()
 
@@ -92,13 +100,39 @@ class GUI_Functions():
 		print("** button clicked to cancel **")
 		window_to_close.destroy()
 
+	# MIGHT NEED TO RUN LAB FIRST VFOR THIS TO WORK??
 	def add_btn_clicked(self):
 		# do stuff for when "add" object button is clicked
 		print("** Add button clicked **")
 
+		#test_put_obstacle(obstacle_name, x, y, angle, width, height)
+		#test_put_obstacle("ObstacleTest", 0.5, 0.5, 0.0, 0.5, 2.4)
+		print("Check if obstacle was placed correctly...")
+
+
+
 	def remove_btn_clicked(self):
 		# do stuff for when "remove" object button is clicked
 		print("** Remove button clicked **")
+
+	# testing how to add ndarray as image to the GUI window
+	# def test_ndarray_image(self, image_array):
+
+	# 	img_2, img_h = 200, 200
+	# 	data = np.zeros((img_h, img_2, 3), dtype=np.uint8)
+	# 	data[100, 100] = [255, 0, 0]
+		
+	# 	self.img = Image.fromarray(data, image_array)
+	# 	self.section_1.config(image=self.img)
+	# 	self.section_1.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
+	# 	self.section_1.update()
+
+		# self.img_1 = ImageTk.PhotoImage(image_array).resize((400, 200))
+
+		# self.section_1.config(image=self.img_1)
+		# self.section_1.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
+		# self.section_1.update()
+
 
 
 	# function to test adding an image to the GUI window
@@ -132,6 +166,9 @@ class GUI_Functions():
 		returned_val = test_function()
 
 		print("type of return value: ", type(returned_val)) # --> type is: numpy.ndarray
+		# print("try to open array...", returned_val[0]) # --> trying to get into the array to see what it does
+
+		return returned_val
 
 		# self.img_1 = ImageTk.PhotoImage(to_display)
 
@@ -152,7 +189,12 @@ def test_thread():
 	print("---> after test_updates...")
 
 	print("------> testing start.py")
-	gui_fun.test_display_startPY()
+	image_to_display = gui_fun.test_display_startPY()
+
+	# print("---> Now trying to display the returned value for the camera image...")
+	# gui_fun.test_ndarray_image(image_to_display)
+
+
 
 def start_thread():
 	print("starting thread...")

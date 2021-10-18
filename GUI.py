@@ -76,28 +76,28 @@ class GUI_Functions():
 		self.add_window = Toplevel(root)
 		self.add_window.geometry("400x400")
 		self.add_window.title("Add Object")
+
 		lbl = Label(self.add_window, text="Enter the values for an object to add.").grid(column=0, row=0)
 		e_lbl = Label(self.add_window, text="Enter a name for the object: ").grid(column=0, row=1)
-		self.e = Entry(self.add_window, width=20)
+		self.e = Text(self.add_window, height=1, width=10)
 		self.e.grid(column=1, row=1)
 		e1_lbl = Label(self.add_window, text="Enter an x-value: ").grid(column=0, row=2)
-		self.e2 = Entry(self.add_window, width=20)
+		self.e2 = Text(self.add_window, height=1, width=10)
 		self.e2.grid(column=1, row=2)
 		self.e3_lbl = Label(self.add_window, text="Enter a y-value: ").grid(column=0, row=3)
-		self.e3 = Entry(self.add_window, width=20)
+		self.e3 = Text(self.add_window, height=1, width=10)
 		self.e3.grid(column=1, row=3)
 		e4_lbl = Label(self.add_window, text="Enter an angle value: ").grid(column=0, row=4)
-		self.e4 = Entry(self.add_window, width=20)
+		self.e4 = Text(self.add_window, height=1, width=10)
 		self.e4.grid(column=1, row=4)
 		e5_lbl = Label(self.add_window, text="Enter a width value: ").grid(column=0, row=5)
-		self.e5 = Entry(self.add_window, width=20)
+		self.e5 = Text(self.add_window, height=1, width=10)
 		self.e5.grid(column=1, row=5)
 		e6_lbl = Label(self.add_window, text="Enter a height value: ").grid(column=0, row=6)
-		self.e6 = Entry(self.add_window, width=20)
+		self.e6 = Text(self.add_window, height=1, width=10)
 		self.e6.grid(column=1, row=6)
 		add_btn = Button(self.add_window, text="Add", command=self.add_btn_clicked).grid(column=0, row=7)
 		cancel_btn = Button(self.add_window, text="Cancel", command=lambda: self.cancel_btn_click(self.add_window)).grid(column=2, row=7)
-		print("Test entries: ", self.e.get(), self.e2.get(), self.e3.get(), self.e4.get(), self.e5.get(), self.e6.get())
 
 	# handles the event where the 'remove objects' from simulation button is clicked
 	def remove_objects_clicked(self):
@@ -117,6 +117,8 @@ class GUI_Functions():
 	def add_btn_clicked(self):
 		# do stuff for when "add" object button is clicked
 		print("** Add button clicked **")
+		print("Test entries: ", self.e.get("1.0", 'end-1c'), self.e2.get("1.0", 'end-1c'), self.e3.get("1.0", 'end-1c'), self.e4.get("1.0", 'end-1c'), self.e5.get("1.0", 'end-1c'), self.e6.get("1.0", 'end-1c'))
+
 
 		#test_put_obstacle(obstacle_name, x, y, angle, width, height)
 		#test_put_obstacle("ObstacleTest", 0.5, 0.5, 0.0, 0.5, 2.4)
@@ -181,15 +183,27 @@ class GUI_Functions():
 		print("type of return value: ", type(returned_val)) # --> type is: numpy.ndarray
 		# print("try to open array...", returned_val[0]) # --> trying to get into the array to see what it does
 
-		return returned_val
-
-		print("Now displaying returned image...")
-		self.image_1 = Image.open(returned_val).resize((400, 200))
-		self.img_1 = ImageTk.PhotoImage(self.image_1)
-
-		self.section_1.config(image=self.img_1)
+		array = np.ones((40, 40))*150
+		img = ImageTk.PhotoImage(image=Image.fromarray(array))
+		# canvas = Canvas(width=3000, height=300)
+		# canvas.pack()
+		# canvas.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
+		
+		#to_display = canvas.create_image(20,20, anchor="nw", image=img)
+		# self.section_1.update()
+		self.section_1.config(image=img)
 		self.section_1.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
 		self.section_1.update()
+
+		# return returned_val
+
+		# print("Now displaying returned image...")
+		# self.image_1 = Image.open(returned_val).resize((400, 200))
+		# self.img_1 = ImageTk.PhotoImage(self.image_1)
+
+		# self.section_1.config(image=self.img_1)
+		# self.section_1.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
+		# self.section_1.update()
 
 		# self.img_1 = ImageTk.PhotoImage(to_display)
 

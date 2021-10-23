@@ -130,24 +130,6 @@ class GUI_Functions():
 		# do stuff for when "remove" object button is clicked
 		print("** Remove button clicked **")
 
-	# testing how to add ndarray as image to the GUI window
-	# def test_ndarray_image(self, image_array):
-
-	# 	img_2, img_h = 200, 200
-	# 	data = np.zeros((img_h, img_2, 3), dtype=np.uint8)
-	# 	data[100, 100] = [255, 0, 0]
-		
-	# 	self.img = Image.fromarray(data, image_array)
-	# 	self.section_1.config(image=self.img)
-	# 	self.section_1.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
-	# 	self.section_1.update()
-
-		# self.img_1 = ImageTk.PhotoImage(image_array).resize((400, 200))
-
-		# self.section_1.config(image=self.img_1)
-		# self.section_1.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
-		# self.section_1.update()
-
 
 
 	# function to test adding an image to the GUI window
@@ -171,7 +153,7 @@ class GUI_Functions():
 
 		self.section_1.update()
 
-		self.test_add_image()
+		#self.test_add_image()
 
 
 	# function to update GUI window by displaying the 'frame' object found from (D:Workspace/pythonCamera/start.py)

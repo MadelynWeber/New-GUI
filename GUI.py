@@ -38,7 +38,7 @@ class GUI_Functions():
 		root.geometry("1100x900")
 
 		# elements for the first section of the window grid
-		self.section_1 = Label(root, text="This is the first section of the window.\n [This is where the camera image will be loaded]", bg="MediumPurple1")
+		self.section_1 = Label(root, text="Loading Camera Image...", bg="MediumPurple1")
 		self.section_1.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
 
 		# elements for the second section of the window grid
@@ -79,22 +79,22 @@ class GUI_Functions():
 
 		lbl = Label(self.add_window, text="Enter the values for an object to add.").grid(column=0, row=0)
 		e_lbl = Label(self.add_window, text="Enter a name for the object: ").grid(column=0, row=1)
-		self.e = Text(self.add_window, height=1, width=10)
+		self.e = Text(self.add_window, height=1, width=15)
 		self.e.grid(column=1, row=1)
 		e1_lbl = Label(self.add_window, text="Enter an x-value: ").grid(column=0, row=2)
-		self.e2 = Text(self.add_window, height=1, width=10)
+		self.e2 = Text(self.add_window, height=1, width=15)
 		self.e2.grid(column=1, row=2)
 		self.e3_lbl = Label(self.add_window, text="Enter a y-value: ").grid(column=0, row=3)
-		self.e3 = Text(self.add_window, height=1, width=10)
+		self.e3 = Text(self.add_window, height=1, width=15)
 		self.e3.grid(column=1, row=3)
 		e4_lbl = Label(self.add_window, text="Enter an angle value: ").grid(column=0, row=4)
-		self.e4 = Text(self.add_window, height=1, width=10)
+		self.e4 = Text(self.add_window, height=1, width=15)
 		self.e4.grid(column=1, row=4)
 		e5_lbl = Label(self.add_window, text="Enter a width value: ").grid(column=0, row=5)
-		self.e5 = Text(self.add_window, height=1, width=10)
+		self.e5 = Text(self.add_window, height=1, width=15)
 		self.e5.grid(column=1, row=5)
 		e6_lbl = Label(self.add_window, text="Enter a height value: ").grid(column=0, row=6)
-		self.e6 = Text(self.add_window, height=1, width=10)
+		self.e6 = Text(self.add_window, height=1, width=15)
 		self.e6.grid(column=1, row=6)
 		add_btn = Button(self.add_window, text="Add", command=self.add_btn_clicked).grid(column=0, row=7)
 		cancel_btn = Button(self.add_window, text="Cancel", command=lambda: self.cancel_btn_click(self.add_window)).grid(column=2, row=7)
@@ -177,53 +177,35 @@ class GUI_Functions():
 	# function to update GUI window by displaying the 'frame' object found from (D:Workspace/pythonCamera/start.py)
 	def test_display_startPY(self):
 		# ../pythonCamera/start.py
-		print("---> testing start.py")
-		returned_val = test_function()
 
-		print("type of return value: ", type(returned_val)) # --> type is: numpy.ndarray
-		# print("try to open array...", returned_val[0]) # --> trying to get into the array to see what it does
+		while True:
+			# print("---> testing start.py")
+			returned_val = test_function()
 
-		array = np.ones((40, 40))*150
-		img = ImageTk.PhotoImage(image=Image.fromarray(array))
-		# canvas = Canvas(width=3000, height=300)
-		# canvas.pack()
-		# canvas.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
-		
-		#to_display = canvas.create_image(20,20, anchor="nw", image=img)
-		# self.section_1.update()
-		self.section_1.config(image=img)
-		self.section_1.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
-		self.section_1.update()
+			# print("type of return value: ", type(returned_val)) # --> type is: numpy.ndarray
 
-		# return returned_val
+			array = np.ones((500, 500))*150
+			#img = ImageTk.PhotoImage(image=Image.fromarray(array))
 
-		# print("Now displaying returned image...")
-		# self.image_1 = Image.open(returned_val).resize((400, 200))
-		# self.img_1 = ImageTk.PhotoImage(self.image_1)
-
-		# self.section_1.config(image=self.img_1)
-		# self.section_1.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
-		# self.section_1.update()
-
-		# self.img_1 = ImageTk.PhotoImage(to_display)
-
-		# self.section_1.config(image=self.img_1)
-		# self.section_1.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
-		# self.section_1.update()
-
+			#array = np.zeros((500, 500, 3), dtype=np.uint8)
+			img = ImageTk.PhotoImage(image = Image.fromarray(array))
+			
+			self.section_1.config(image=img)
+			self.section_1.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
+			self.section_1.update()
 
 def test_thread():
-	print("---> Before executor...")
+	# print("---> Before executor...")
 	with concurrent.futures.ThreadPoolExecutor() as executor:
 		future = executor.submit(TestThread)
 		return_value = future.result()
 
-	print("---> before test_updates...")
+	# print("---> before test_updates...")
 	# try to update the GUI window with new text value
 	gui_fun.test_updates(return_value)
-	print("---> after test_updates...")
+	# print("---> after test_updates...")
 
-	print("------> testing start.py")
+	# print("------> testing start.py")
 	image_to_display = gui_fun.test_display_startPY()
 
 	# print("---> Now trying to display the returned value for the camera image...")

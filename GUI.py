@@ -5,9 +5,7 @@ import threading
 import time
 from Test_File import TestThread
 import concurrent.futures
-# TESTING:
 import sys
-# sys.path.append('./pythonCamera')
 sys.path.insert(1, '../pythonCamera')
 from start import test_function
 #sys.path.insert(1, '../pythonSimulator')
@@ -62,9 +60,23 @@ class GUI_Functions():
 		Grid.rowconfigure(root, 1, weight=0)
 		Grid.rowconfigure(root, 2, weight=3)
 
-	# uses a thread to load camera image code separate from the GUI window
+	# function to update GUI window by displaying the 'frame' object found from (D:Workspace/pythonCamera/start.py)
 	def load_camera_image(self):
-		pass
+		while True:
+			returned_val = test_function()
+
+			# print("type of return value: ", type(returned_val)) # --> type is: numpy.ndarray
+
+			array = np.ones((500, 500))*150
+			#img = ImageTk.PhotoImage(image=Image.fromarray(array))
+
+			#array = np.zeros((500, 500, 3), dtype=np.uint8)
+			img = ImageTk.PhotoImage(image = Image.fromarray(array))
+			
+			self.section_1.config(image=img)
+			self.section_1.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
+			self.section_1.update()
+
 
 	# displays the simulation 
 	def show_simulation(self):
@@ -128,53 +140,36 @@ class GUI_Functions():
 
 	def remove_btn_clicked(self):
 		# do stuff for when "remove" object button is clicked
+		
+
 		print("** Remove button clicked **")
 
 
 
 	# function to test adding an image to the GUI window
-	def test_add_image(self):
+	# def test_add_image(self):
 
-		self.image_1 = Image.open("./image_2.jpeg").resize((400, 200))
-		self.img_1 = ImageTk.PhotoImage(self.image_1)
+	# 	self.image_1 = Image.open("./image_2.jpeg").resize((400, 200))
+	# 	self.img_1 = ImageTk.PhotoImage(self.image_1)
 
-		self.section_1.config(image=self.img_1)
-		self.section_1.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
-		self.section_1.update()
+	# 	self.section_1.config(image=self.img_1)
+	# 	self.section_1.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
+	# 	self.section_1.update()
 
 	# function to test updates to GUI window
-	def test_updates(self, value_of_update):
+	# def test_updates(self, value_of_update):
 
-		print("---> Is in test_updates function")
+	# 	print("---> Is in test_updates function")
 
-		#self.section_1 = Label(root, text=value_of_update)
-		self.section_1.config(text=value_of_update)
-		self.section_1.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
+	# 	#self.section_1 = Label(root, text=value_of_update)
+	# 	self.section_1.config(text=value_of_update)
+	# 	self.section_1.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
 
-		self.section_1.update()
+	# 	self.section_1.update()
 
 		#self.test_add_image()
 
 
-	# function to update GUI window by displaying the 'frame' object found from (D:Workspace/pythonCamera/start.py)
-	def test_display_startPY(self):
-		# ../pythonCamera/start.py
-
-		while True:
-			# print("---> testing start.py")
-			returned_val = test_function()
-
-			# print("type of return value: ", type(returned_val)) # --> type is: numpy.ndarray
-
-			array = np.ones((500, 500))*150
-			#img = ImageTk.PhotoImage(image=Image.fromarray(array))
-
-			#array = np.zeros((500, 500, 3), dtype=np.uint8)
-			img = ImageTk.PhotoImage(image = Image.fromarray(array))
-			
-			self.section_1.config(image=img)
-			self.section_1.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
-			self.section_1.update()
 
 def test_thread():
 	# print("---> Before executor...")
@@ -184,11 +179,10 @@ def test_thread():
 
 	# print("---> before test_updates...")
 	# try to update the GUI window with new text value
-	gui_fun.test_updates(return_value)
+	# gui_fun.test_updates(return_value)
 	# print("---> after test_updates...")
 
-	# print("------> testing start.py")
-	image_to_display = gui_fun.test_display_startPY()
+	image_to_display = gui_fun.load_camera_image()
 
 	# print("---> Now trying to display the returned value for the camera image...")
 	# gui_fun.test_ndarray_image(image_to_display)

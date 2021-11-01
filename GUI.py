@@ -60,6 +60,8 @@ class GUI_Functions():
 		Grid.rowconfigure(root, 1, weight=0)
 		Grid.rowconfigure(root, 2, weight=3)
 
+		self.objects_dict = {}		# dictionary to hold added objects
+
 	# function to update GUI window by displaying the 'frame' object found from (D:Workspace/pythonCamera/start.py)
 	def load_camera_image(self):
 		while True:
@@ -90,26 +92,30 @@ class GUI_Functions():
 		self.add_window.title("Add Object")
 
 		lbl = Label(self.add_window, text="Enter the values for an object to add.").grid(column=0, row=0)
-		e_lbl = Label(self.add_window, text="Enter a name for the object: ").grid(column=0, row=1)
-		self.e = Text(self.add_window, height=1, width=15)
-		self.e.grid(column=1, row=1)
-		e1_lbl = Label(self.add_window, text="Enter an x-value: ").grid(column=0, row=2)
-		self.e2 = Text(self.add_window, height=1, width=15)
-		self.e2.grid(column=1, row=2)
-		self.e3_lbl = Label(self.add_window, text="Enter a y-value: ").grid(column=0, row=3)
-		self.e3 = Text(self.add_window, height=1, width=15)
-		self.e3.grid(column=1, row=3)
-		e4_lbl = Label(self.add_window, text="Enter an angle value: ").grid(column=0, row=4)
-		self.e4 = Text(self.add_window, height=1, width=15)
-		self.e4.grid(column=1, row=4)
-		e5_lbl = Label(self.add_window, text="Enter a width value: ").grid(column=0, row=5)
-		self.e5 = Text(self.add_window, height=1, width=15)
-		self.e5.grid(column=1, row=5)
-		e6_lbl = Label(self.add_window, text="Enter a height value: ").grid(column=0, row=6)
-		self.e6 = Text(self.add_window, height=1, width=15)
-		self.e6.grid(column=1, row=6)
-		add_btn = Button(self.add_window, text="Add", command=self.add_btn_clicked).grid(column=0, row=7)
-		cancel_btn = Button(self.add_window, text="Cancel", command=lambda: self.cancel_btn_click(self.add_window)).grid(column=2, row=7)
+		name_lbl = Label(self.add_window, text="Enter a name for the object: ").grid(column=0, row=1)
+		self.add_window.object_name = Text(self.add_window, height=1, width=15)
+		self.add_window.object_name.grid(column=1, row=1)
+		x_lbl = Label(self.add_window, text="Enter an x-value: ").grid(column=0, row=2)
+		self.add_window.x_val = Text(self.add_window, height=1, width=15)
+		self.add_window.x_val.grid(column=1, row=2)
+		y_lbl = Label(self.add_window, text="Enter a y-value: ").grid(column=0, row=3)
+		self.add_window.y_val = Text(self.add_window, height=1, width=15)
+		self.add_window.y_val.grid(column=1, row=3)
+		angle_lbl = Label(self.add_window, text="Enter an angle value: ").grid(column=0, row=4)
+		self.add_window.angle_val = Text(self.add_window, height=1, width=15)
+		self.add_window.angle_val.grid(column=1, row=4)
+		width_lbl = Label(self.add_window, text="Enter a width value: ").grid(column=0, row=5)
+		self.add_window.width_val = Text(self.add_window, height=1, width=15)
+		self.add_window.width_val.grid(column=1, row=5)
+		height_lbl = Label(self.add_window, text="Enter a height value: ").grid(column=0, row=6)
+		self.add_window.height_val = Text(self.add_window, height=1, width=15)
+		self.add_window.height_val.grid(column=1, row=6)
+
+		add_btn = Button(self.add_window, text="Add", command=lambda: self.add_btn_clicked(self.add_window.object_name, self.add_window.x_val, self.add_window.y_val, self.add_window.angle_val, self.add_window.width_val, self.add_window.height_val))
+		add_btn.grid(column=0, row=7)
+		cancel_btn = Button(self.add_window, text="Cancel", command=lambda: self.cancel_btn_click(self.add_window))
+		cancel_btn.grid(column=2, row=7)
+
 
 	# handles the event where the 'remove objects' from simulation button is clicked
 	def remove_objects_clicked(self):
@@ -125,16 +131,55 @@ class GUI_Functions():
 		print("** button clicked to cancel **")
 		window_to_close.destroy()
 
-	# MIGHT NEED TO RUN LAB FIRST VFOR THIS TO WORK??
-	def add_btn_clicked(self):
-		# do stuff for when "add" object button is clicked
-		print("** Add button clicked **")
-		print("Test entries: ", self.e.get("1.0", 'end-1c'), self.e2.get("1.0", 'end-1c'), self.e3.get("1.0", 'end-1c'), self.e4.get("1.0", 'end-1c'), self.e5.get("1.0", 'end-1c'), self.e6.get("1.0", 'end-1c'))
+	def add_btn_clicked(self, name, x, y, angle, width, height): 
+
+		print("** add button has been clicked **")
+		
+		# print("Test entries: ", self.add_window.object_name.get("1.0", 'end-1c'), self.add_window.x_val.get("1.0", 'end-1c'), self.add_window.y_val.get("1.0", 'end-1c'), self.add_window.angle_val.get("1.0", 'end-1c'), self.add_window.width_val.get("1.0", 'end-1c'), self.add_window.height_val.get("1.0", 'end-1c'))
+
+		object_name = self.add_window.object_name.get("1.0", 'end-1c')
+		object_x_val = self.add_window.x_val.get("1.0", 'end-1c')
+		object_y_val = self.add_window.y_val.get("1.0", 'end-1c')
+		object_angle_val = self.add_window.angle_val.get("1.0", 'end-1c')
+		object_width_val = self.add_window.width_val.get("1.0", 'end-1c')
+		object_height_val = self.add_window.height_val.get("1.0", 'end-1c')
+
+		print("TESTING VALUES: ", object_name, object_x_val, object_y_val, object_angle_val, object_width_val, object_height_val)
 
 
-		#test_put_obstacle(obstacle_name, x, y, angle, width, height)
-		#test_put_obstacle("ObstacleTest", 0.5, 0.5, 0.0, 0.5, 2.4)
-		print("Check if obstacle was placed correctly...")
+		# if object_name not in self.objects_dict:, 'end-1c
+		# 	self.objects_dict[object_name] = [x_val, y_val, angle_val, width_val, height_val]
+		# 	object_name = ""
+		# 	x_val = ""
+		# 	y_val = ""
+		# 	angle_val = ""
+		# 	width_val = ""
+		# 	height_val = ""
+
+		# else:
+		# 	# find a way to display error message box
+		# 	pass
+
+
+		# print("** Add button clicked **")
+		# print("TEST: ", object_name, x_val, y_val, angle_val, width_val, height_val)
+		# print("Test entries: ", object_name.get("1.0", 'end-1c'), x_val.get("1.0", 'end-1c'), y_val.get("1.0", 'end-1c'), angle_val.get("1.0", 'end-1c'), width_val.get("1.0", 'end-1c'), height_val.get("1.0", 'end-1c'))
+
+		# if object_name not in self.objects_dict:
+		# 	self.objects_dict[object_name] = [x_val, y_val, angle_val, width_val, height_val]
+		# 	self.object_name = ""
+		# 	self.x_val = ""
+		# 	self.y_val = ""
+		# 	self.angle_val = ""
+		# 	self.width_val = ""
+		# 	self.height_val = ""
+
+		# else:
+		# 	# find a way to display error message box
+		# 	pass
+		# #test_put_obstacle(obstacle_name, x, y, angle, width, height)
+		# #test_put_obstacle("ObstacleTest", 0.5, 0.5, 0.0, 0.5, 2.4)
+		# print("Check if obstacle was placed correctly...")
 
 
 

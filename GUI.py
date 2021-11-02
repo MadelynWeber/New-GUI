@@ -33,7 +33,7 @@ class GUI_Functions():
 
 	def __init__(self, root):
 
-		root.geometry("1100x900")
+		root.geometry("2560x1440")
 
 		# elements for the first section of the window grid
 		self.section_1 = Label(root, text="Loading Camera Image...", bg="MediumPurple1")
@@ -56,9 +56,9 @@ class GUI_Functions():
 		Grid.columnconfigure(root, 1, weight=1)
 		Grid.columnconfigure(root, 2, weight=1)
 		Grid.columnconfigure(root, 3, weight=1)
-		Grid.rowconfigure(root, 0, weight=0)
+		Grid.rowconfigure(root, 0, weight=1)
 		Grid.rowconfigure(root, 1, weight=0)
-		Grid.rowconfigure(root, 2, weight=3)
+		Grid.rowconfigure(root, 2, weight=4)
 
 		self.objects_dict = {}		# dictionary to hold added objects
 
@@ -69,15 +69,16 @@ class GUI_Functions():
 
 			# print("type of return value: ", type(returned_val)) # --> type is: numpy.ndarray
 
-			array = np.ones((500, 500))*150
-			#img = ImageTk.PhotoImage(image=Image.fromarray(array))
+			# array = np.ones((500, 500))*150
 
-			#array = np.zeros((500, 500, 3), dtype=np.uint8)
-			img = ImageTk.PhotoImage(image = Image.fromarray(array))
+			img = ImageTk.PhotoImage(image = Image.fromarray(returned_val))
 			
 			self.section_1.config(image=img)
 			self.section_1.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
 			self.section_1.update()
+
+			# print("width: ", root.winfo_screenwidth())
+			# print("height: ", root.winfo_screenheight())
 
 
 	# displays the simulation 
@@ -146,6 +147,14 @@ class GUI_Functions():
 
 		print("TESTING VALUES: ", object_name, object_x_val, object_y_val, object_angle_val, object_width_val, object_height_val)
 
+		# self.add_window.object_name.delete(0, END)
+		# self.add_window.object_name.insert(END, " ")
+		# self.add_window.object_name.update()
+		# self.add_window.x_val.delete(END)
+		# self.add_window.y_val.delete(0, END)
+		# self.add_window.angle_val.delete(0, END)
+		# self.add_window.width_val.delete(0, END)
+		# self.add_window.height_val.delete(0, END)
 
 		# if object_name not in self.objects_dict:, 'end-1c
 		# 	self.objects_dict[object_name] = [x_val, y_val, angle_val, width_val, height_val]

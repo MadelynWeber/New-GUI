@@ -10,6 +10,8 @@ sys.path.insert(1, '../pythonCamera')
 from start import test_function
 #sys.path.insert(1, '../pythonSimulator')
 #from example import test_put_obstacle
+#sys.path.insert(1, '../pythonSimulator')
+#from pythonSimulator.start import return_image
 import numpy as np
 
 
@@ -84,6 +86,7 @@ class GUI_Functions():
 	# displays the simulation 
 	def show_simulation(self):
 		# TODO: figure out how to embed the arcade window in this GUI window
+		image = return_image()
 		pass
 
 	# handles the event where the 'add objects' to simulation button is clicked
@@ -123,80 +126,52 @@ class GUI_Functions():
 		self.remove_window = Toplevel(root)
 		self.remove_window.geometry("400x400")
 		self.remove_window.title("Remove Object")
-		lbl = Label(self.remove_window, text="Enter the name of the object to remove.").pack()
-		e = Entry(self.remove_window, width=20).pack()
-		remove_btn = Button(self.remove_window, text="Remove", command=self.remove_btn_clicked).pack()
-		cance_btn = Button(self.remove_window, text="Cancel", command=lambda: self.cancel_btn_click(self.remove_window)).pack()
+
+		lbl = Label(self.remove_window, text="Enter the name of the object to remove.").grid(column=0, row=0)
+		self.remove_window.remove_object = Text(self.remove_window, height=1, width=15)
+		self.remove_window.remove_object.grid(column=1, row=1)
+		# e = Entry(self.remove_window, width=20).pack()
+		remove_btn = Button(self.remove_window, text="Remove", command=self.remove_btn_clicked).grid(column=0, row=2)
+		cance_btn = Button(self.remove_window, text="Cancel", command=lambda: self.cancel_btn_click(self.remove_window)).grid(column=2, row=2)
 
 	def cancel_btn_click(self, window_to_close):
 		print("** button clicked to cancel **")
 		window_to_close.destroy()
+		window_to_close.update()
 
 	def add_btn_clicked(self, name, x, y, angle, width, height): 
 
 		print("** add button has been clicked **")
 		
-		# print("Test entries: ", self.add_window.object_name.get("1.0", 'end-1c'), self.add_window.x_val.get("1.0", 'end-1c'), self.add_window.y_val.get("1.0", 'end-1c'), self.add_window.angle_val.get("1.0", 'end-1c'), self.add_window.width_val.get("1.0", 'end-1c'), self.add_window.height_val.get("1.0", 'end-1c'))
-
+		# getting objects entered into text boxes
 		object_name = self.add_window.object_name.get("1.0", 'end-1c')
 		object_x_val = self.add_window.x_val.get("1.0", 'end-1c')
 		object_y_val = self.add_window.y_val.get("1.0", 'end-1c')
 		object_angle_val = self.add_window.angle_val.get("1.0", 'end-1c')
 		object_width_val = self.add_window.width_val.get("1.0", 'end-1c')
 		object_height_val = self.add_window.height_val.get("1.0", 'end-1c')
+		
+		# removing values entered into text boxes
+		self.add_window.object_name.delete("1.0", 'end-1c')
+		self.add_window.x_val.delete("1.0", 'end-1c')
+		self.add_window.y_val.delete("1.0", 'end-1c')
+		self.add_window.angle_val.delete("1.0", 'end-1c')
+		self.add_window.width_val.delete("1.0", 'end-1c')
+		self.add_window.height_val.delete("1.0", 'end-1c')
 
 		print("TESTING VALUES: ", object_name, object_x_val, object_y_val, object_angle_val, object_width_val, object_height_val)
 
-		# self.add_window.object_name.delete(0, END)
-		# self.add_window.object_name.insert(END, " ")
-		# self.add_window.object_name.update()
-		# self.add_window.x_val.delete(END)
-		# self.add_window.y_val.delete(0, END)
-		# self.add_window.angle_val.delete(0, END)
-		# self.add_window.width_val.delete(0, END)
-		# self.add_window.height_val.delete(0, END)
-
-		# if object_name not in self.objects_dict:, 'end-1c
-		# 	self.objects_dict[object_name] = [x_val, y_val, angle_val, width_val, height_val]
-		# 	object_name = ""
-		# 	x_val = ""
-		# 	y_val = ""
-		# 	angle_val = ""
-		# 	width_val = ""
-		# 	height_val = ""
-
-		# else:
-		# 	# find a way to display error message box
-		# 	pass
-
-
-		# print("** Add button clicked **")
-		# print("TEST: ", object_name, x_val, y_val, angle_val, width_val, height_val)
-		# print("Test entries: ", object_name.get("1.0", 'end-1c'), x_val.get("1.0", 'end-1c'), y_val.get("1.0", 'end-1c'), angle_val.get("1.0", 'end-1c'), width_val.get("1.0", 'end-1c'), height_val.get("1.0", 'end-1c'))
-
-		# if object_name not in self.objects_dict:
-		# 	self.objects_dict[object_name] = [x_val, y_val, angle_val, width_val, height_val]
-		# 	self.object_name = ""
-		# 	self.x_val = ""
-		# 	self.y_val = ""
-		# 	self.angle_val = ""
-		# 	self.width_val = ""
-		# 	self.height_val = ""
-
-		# else:
-		# 	# find a way to display error message box
-		# 	pass
-		# #test_put_obstacle(obstacle_name, x, y, angle, width, height)
-		# #test_put_obstacle("ObstacleTest", 0.5, 0.5, 0.0, 0.5, 2.4)
-		# print("Check if obstacle was placed correctly...")
-
-
+		self.add_window.destroy()
+		self.add_window.update()
 
 	def remove_btn_clicked(self):
-		# do stuff for when "remove" object button is clicked
-		
 
 		print("** Remove button clicked **")
+
+		self.remove_window.remove_object.delete("1.0", 'end-1c')
+
+		self.remove_window.destroy()
+		self.remove_window.update()
 
 
 

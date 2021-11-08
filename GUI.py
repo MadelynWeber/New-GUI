@@ -8,12 +8,17 @@ import concurrent.futures
 import sys
 sys.path.insert(1, '../pythonCamera')
 from start import test_function
-#sys.path.insert(1, '../pythonSimulator')
-#from example import test_put_obstacle
+# sys.path.insert(1, '../pythonSimulator')
+# from example import return_rest_client
 #sys.path.insert(1, '../pythonSimulator')
 #from pythonSimulator.start import return_image
 import numpy as np
-
+# for testing
+sys.path.insert(1, "../pythonSimulator")
+import ConfigReader
+import RESTApiClient
+import time
+import json
 
 
 
@@ -29,6 +34,9 @@ import numpy as np
 # |       third section         |   row 1
 # |                             |
 # -------------------------------
+
+
+
 
 
 class GUI_Functions():
@@ -120,6 +128,9 @@ class GUI_Functions():
 		cancel_btn = Button(self.add_window, text="Cancel", command=lambda: self.cancel_btn_click(self.add_window))
 		cancel_btn.grid(column=2, row=7)
 
+		# added to test output of print statement
+		# print("Check next print statement")
+
 
 	# handles the event where the 'remove objects' from simulation button is clicked
 	def remove_objects_clicked(self):
@@ -150,6 +161,9 @@ class GUI_Functions():
 		object_angle_val = self.add_window.angle_val.get("1.0", 'end-1c')
 		object_width_val = self.add_window.width_val.get("1.0", 'end-1c')
 		object_height_val = self.add_window.height_val.get("1.0", 'end-1c')
+
+		self.test_example(self.add_window.x_val, self.add_window.y_val, self.add_window.angle_val, self.add_window.width_val, self.add_window.height_val)
+
 		
 		# removing values entered into text boxes
 		self.add_window.object_name.delete("1.0", 'end-1c')
@@ -161,12 +175,72 @@ class GUI_Functions():
 
 		print("TESTING VALUES: ", object_name, object_x_val, object_y_val, object_angle_val, object_width_val, object_height_val)
 
+
+
 		self.add_window.destroy()
 		self.add_window.update()
+
+
+	def test_example(self, x, y, angle, width, height):
+
+		# read some configs from the config file
+		config_file = "../pythonSimulator/robot.cfg"
+		config_reader = ConfigReader.ConfigReader(config_file)
+		objects_server_url = config_reader.get_value_string("simulation.objects_server_url")
+
+		# the REST client
+		rest_client = RESTApiClient.RESTApiClient(objects_server_url)
+
+
+		# get the data
+		print("Data:")
+		print(rest_client.restGETjson())
+
+		object_name_val = str(self.add_window.object_name.get("1.0", 'end-1c'))
+		object_x_val = self.add_window.x_val.get("1.0", 'end-1c')
+		object_y_val = self.add_window.y_val.get("1.0", 'end-1c')
+		object_angle_val = self.add_window.angle_val.get("1.0", 'end-1c')
+		object_width_val = self.add_window.width_val.get("1.0", 'end-1c')
+		object_height_val = self.add_window.height_val.get("1.0", 'end-1c')
+
+		obstacle_data = str(object_x_val) + ", " + str(object_y_val) + ", " + str(object_angle_val) + ", " + "0.0, 0.0, " + str(object_width_val) + ", " + str(object_height_val)
+	
+		# put a new obstacle
+		json_data = {
+		object_name_val:obstacle_data
+		}
+		rest_client.restPUTjson(json_data)
+		print("Added ", object_name_val)
+
+		# wait for 3 seconds
+		# time.sleep(10)
+
+		# # delete the obstacle
+		# json_data = ["ObstacleX"]
+		# rest_client.restDELjson(json_data)
+		# print("Deleted ObstalceX")
+
 
 	def remove_btn_clicked(self):
 
 		print("** Remove button clicked **")
+
+		# read some configs from the config file
+		config_file = "../pythonSimulator/robot.cfg"
+		config_reader = ConfigReader.ConfigReader(config_file)
+		objects_server_url = config_reader.get_value_string("simulation.objects_server_url")
+
+		# the REST client
+		rest_client = RESTApiClient.RESTApiClient(objects_server_url)
+
+		object_name_val = self.remove_window.remove_object.get("1.0", 'end-1c')
+
+
+		# delete the obstacle
+		json_data = [str(object_name_val)]
+		rest_client.restDELjson(json_data)
+		print("Deleted ObstalceX")
+
 
 		self.remove_window.remove_object.delete("1.0", 'end-1c')
 

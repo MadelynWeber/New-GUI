@@ -20,6 +20,9 @@ import RESTApiClient
 import time
 import json
 
+# for testing
+from GUIArenaSimulator import test_get_simulator 
+
 
 
 # Window should look like:
@@ -90,12 +93,19 @@ class GUI_Functions():
 			# print("width: ", root.winfo_screenwidth())
 			# print("height: ", root.winfo_screenheight())
 
+			# for testing...
+			print("---> Testing new function...")
+			# TODO: not working yet..
+			# self.section_2 = self.show_simulation
+			# self.section_2.grid(column=2, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
+			# self.section_2.update()
+
 
 	# displays the simulation 
 	def show_simulation(self):
 		# TODO: figure out how to embed the arcade window in this GUI window
-		image = return_image()
-		pass
+		image = test_get_simulator()
+		return image
 
 	# handles the event where the 'add objects' to simulation button is clicked
 	def add_objects_clicked(self):

@@ -48,12 +48,15 @@ class GUI_Functions():
 
 		root.geometry("2560x1440")
 
+		# holds objects added to arena
+		self.hold_objects = []
+
 		# elements for the first section of the window grid
-		self.section_1 = Label(root, text="Loading Camera Image...", bg="MediumPurple1")
+		self.section_1 = Label(root, text="Loading Camera Image...", bg="black")
 		self.section_1.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
 
 		# elements for the second section of the window grid
-		self.section_2 = Label(root, text="This is the second section of the window.\n [This is where the simulation will be visible]", bg="SteelBlue2").grid(column=2, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
+		self.section_2 = Label(root, text="This is the second section of the window.\n [This is where the simulation will be visible]", bg="black").grid(column=2, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
 		self.add_object_btn = Button(root, text="Add object", command=self.add_objects_clicked).grid(column=2, row=1, sticky=S, pady=15)
 
 		self.remove_obejct_btn = Button(root, text="Remove object", command=self.remove_objects_clicked).grid(column=3, row=1, sticky=S, pady=15)
@@ -62,7 +65,7 @@ class GUI_Functions():
 		self.placeholder = Label(root, text="This is a placeholder for where the simulation will be displayed.", bg="White", width=15, height=30).grid(column=2, row=0, columnspan=2, rowspan=1, sticky=N+E+S+W, padx=20, pady=20)
 
 		# elements for the third section of the window grid
-		self.section_3 = Label(root, text="This is the third section of the window.\n ", bg="Orchid2").grid(columnspan=4, row=2, sticky=N+E+S+W)
+		self.section_3 = Label(root, text="This is the third section of the window.\n ", bg="black").grid(columnspan=4, row=2, sticky=N+E+S+W)
 
 		# configuring columns and rows
 		Grid.columnconfigure(root, 0, weight=1)
@@ -73,29 +76,20 @@ class GUI_Functions():
 		Grid.rowconfigure(root, 1, weight=0)
 		Grid.rowconfigure(root, 2, weight=4)
 
-		self.objects_dict = {}		# dictionary to hold added objects
+		# self.objects_dict = {}		# dictionary to hold added objects
 
 	# function to update GUI window by displaying the 'frame' object found from (D:Workspace/pythonCamera/start.py)
 	def load_camera_image(self):
 		while True:
 			returned_val = test_function()
-
-			# print("type of return value: ", type(returned_val)) # --> type is: numpy.ndarray
-
-			# array = np.ones((500, 500))*150
-
 			img = ImageTk.PhotoImage(image = Image.fromarray(returned_val))
 			
 			self.section_1.config(image=img)
 			self.section_1.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
 			self.section_1.update()
 
-			# print("width: ", root.winfo_screenwidth())
-			# print("height: ", root.winfo_screenheight())
-
-			# for testing...
-			print("---> Testing new function...")
 			# TODO: not working yet..
+			self.show_simulation()
 			# self.section_2 = self.show_simulation
 			# self.section_2.grid(column=2, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
 			# self.section_2.update()
@@ -104,8 +98,16 @@ class GUI_Functions():
 	# displays the simulation 
 	def show_simulation(self):
 		# TODO: figure out how to embed the arcade window in this GUI window
-		image = test_get_simulator()
-		return image
+		# test_get_simulator()
+		# print("image type: ", type(image))
+
+		# returned_val = test_get_simulator()
+		img = ImageTk.PhotoImage(image = Image.fromarray(test_get_simulator()))
+			
+		self.section_2.config(image=img)
+		self.section_2.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=N+E+S+W)
+		self.section_2.update()
+		# pass
 
 	# handles the event where the 'add objects' to simulation button is clicked
 	def add_objects_clicked(self):
@@ -138,9 +140,6 @@ class GUI_Functions():
 		cancel_btn = Button(self.add_window, text="Cancel", command=lambda: self.cancel_btn_click(self.add_window))
 		cancel_btn.grid(column=2, row=7)
 
-		# added to test output of print statement
-		# print("Check next print statement")
-
 
 	# handles the event where the 'remove objects' from simulation button is clicked
 	def remove_objects_clicked(self):
@@ -148,10 +147,11 @@ class GUI_Functions():
 		self.remove_window.geometry("400x400")
 		self.remove_window.title("Remove Object")
 
+		print("objects added: ", self.hold_objects)
+
 		lbl = Label(self.remove_window, text="Enter the name of the object to remove.").grid(column=0, row=0)
 		self.remove_window.remove_object = Text(self.remove_window, height=1, width=15)
 		self.remove_window.remove_object.grid(column=1, row=1)
-		# e = Entry(self.remove_window, width=20).pack()
 		remove_btn = Button(self.remove_window, text="Remove", command=self.remove_btn_clicked).grid(column=0, row=2)
 		cance_btn = Button(self.remove_window, text="Cancel", command=lambda: self.cancel_btn_click(self.remove_window)).grid(column=2, row=2)
 
@@ -173,7 +173,7 @@ class GUI_Functions():
 		object_height_val = self.add_window.height_val.get("1.0", 'end-1c')
 
 		self.test_example(self.add_window.x_val, self.add_window.y_val, self.add_window.angle_val, self.add_window.width_val, self.add_window.height_val)
-
+		self.hold_objects.append(object_name)
 		
 		# removing values entered into text boxes
 		self.add_window.object_name.delete("1.0", 'end-1c')
@@ -250,6 +250,10 @@ class GUI_Functions():
 		json_data = [str(object_name_val)]
 		rest_client.restDELjson(json_data)
 		print("Deleted ObstalceX")
+
+		if object_name_val in self.hold_objects:
+			self.hold_objects.remove(object_name_val)
+		print("--> new objects list: ", self.hold_objects)
 
 
 		self.remove_window.remove_object.delete("1.0", 'end-1c')
